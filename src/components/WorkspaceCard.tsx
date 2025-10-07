@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FiTrash2, FiBox, FiLayers, FiEye, FiPlay, FiPause, FiLoader, FiAlertCircle, FiClock } from 'react-icons/fi';
+import { FiTrash2, FiBox, FiLayers, FiEye, FiPlay, FiPause } from 'react-icons/fi';
 import { Workspace } from '../types/workspace';
 import { Module } from '../types/module';
 import { CustomCheckbox } from './CustomCheckbox';
