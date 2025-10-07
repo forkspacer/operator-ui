@@ -53,18 +53,18 @@ This UI communicates with the API Server to provide a user-friendly interface fo
 ┌─────────────────────────────────────────────┐
 │           Kubernetes Cluster                │
 │                                             │
-│  ┌──────────────┐      ┌──────────────┐   │
-│  │  Forkspacer  │◄────►│  API Server  │   │
-│  │   Operator   │      │  (Backend)   │   │
-│  │  (watches    │      │  (REST API)  │   │
-│  │   CRDs)      │      └──────┬───────┘   │
-│  └──────────────┘             │           │
-│                               │           │
-│                      ┌────────▼───────┐   │
-│                      │  Operator UI   │◄──┼─── Users
-│                      │   (Frontend)   │   │
-│                      │   (Nginx)      │   │
-│                      └────────────────┘   │
+│  ┌──────────────┐      ┌──────────────┐     │
+│  │  Forkspacer  │◄────►│  API Server  │     │
+│  │   Operator   │      │  (Backend)   │     │
+│  │  (watches    │      │  (REST API)  │     │
+│  │   CRDs)      │      └──────┬───────┘     │
+│  └──────────────┘             │             │
+│                               │             │
+│                      ┌────────▼───────┐     │
+│                      │  Operator UI   │◄────┼─── Users
+│                      │   (Frontend)   │     │
+│                      │   (Nginx)      │     │
+│                      └────────────────┘     │
 └─────────────────────────────────────────────┘
 ```
 
@@ -176,29 +176,34 @@ spec:
 ### Module Components Explained
 
 **Metadata:**
+
 - `name`: Module identifier
 - `category`: Classification (database, monitoring, storage, etc.)
 - `description`: Human-readable description
 - `resource_usage`: Expected CPU/memory consumption
 
 **Config:**
+
 - Dynamic form fields rendered in the UI
 - Types: `option`, `integer`, `string`, `boolean`
 - Each config item has validation rules (required, min/max, values)
 - UI auto-generates forms based on config definitions
 
 **Spec:**
+
 - `repo`: Helm repository URL
 - `chartName`: Helm chart name
 - `version`: Chart version (supports templating)
 - `values`: Helm values (from file, raw YAML, or ConfigMap)
 
 **Outputs:**
+
 - Connection information exposed after deployment
 - Can reference static values or Kubernetes secrets
 - Displayed in the UI for easy access
 
 **Workspace:**
+
 - Associates the module with a workspace
 - Enables multi-tenancy and resource isolation
 
@@ -250,10 +255,10 @@ spec:
         app: operator-ui
     spec:
       containers:
-      - name: operator-ui
-        image: ghcr.io/forkspacer/operator-ui:v0.1.0
-        ports:
-        - containerPort: 80
+        - name: operator-ui
+          image: ghcr.io/forkspacer/operator-ui:v0.1.0
+          ports:
+            - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
@@ -264,8 +269,8 @@ spec:
   selector:
     app: operator-ui
   ports:
-  - port: 80
-    targetPort: 80
+    - port: 80
+      targetPort: 80
   type: ClusterIP
 ```
 
@@ -507,17 +512,20 @@ docker run -p 8080:80 ghcr.io/forkspacer/operator-ui:v0.1.0
 #### Version Bumping Guidelines
 
 **Patch version (v0.1.0 → v0.1.1):**
+
 - Bug fixes
 - Security patches
 - Documentation updates
 - Performance improvements (no API changes)
 
 **Minor version (v0.1.1 → v0.2.0):**
+
 - New features
 - New UI components
 - API additions (backwards compatible)
 
 **Major version (v0.9.0 → v1.0.0):**
+
 - First stable production release
 - Breaking API changes
 - Major architectural changes
@@ -623,20 +631,20 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - forkspacer-ui.example.com
-    secretName: operator-ui-tls
+    - hosts:
+        - forkspacer-ui.example.com
+      secretName: operator-ui-tls
   rules:
-  - host: forkspacer-ui.example.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: operator-ui
-            port:
-              number: 80
+    - host: forkspacer-ui.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: operator-ui
+                port:
+                  number: 80
 ```
 
 ---
@@ -648,7 +656,8 @@ spec:
 Configure the API server endpoint in `src/config.ts`:
 
 ```typescript
-export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+export const API_BASE_URL =
+  process.env.REACT_APP_API_URL || "http://localhost:8080";
 ```
 
 ### Custom Nginx Configuration
@@ -755,6 +764,7 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 ## Acknowledgments
 
 Built with:
+
 - [React](https://reactjs.org/) - UI framework
 - [Create React App](https://create-react-app.dev/) - Build tooling
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
