@@ -15,11 +15,6 @@ export const WorkspaceDetailsModal: React.FC<WorkspaceDetailsModalProps> = ({
 }) => {
   if (!isOpen || !workspace) return null;
 
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleString();
-  };
-
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal modal-large" onClick={(e) => e.stopPropagation()}>
