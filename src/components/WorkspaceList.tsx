@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { FiRefreshCw, FiPlus, FiTrash2, FiCheckSquare, FiSquare } from 'react-icons/fi';
 import { Workspace, CreateWorkspaceRequest } from '../types/workspace';
 import { apiService } from '../services/api';
@@ -89,7 +89,7 @@ export const WorkspaceList: React.FC = () => {
     return error.message;
   };
 
-  const loadWorkspaces = async (silent = false) => {
+  const loadWorkspaces = useCallback(async (silent = false) => {
     try {
       if (!silent) setError(null);
       const workspacesData = await apiService.listWorkspaces();
@@ -128,7 +128,7 @@ export const WorkspaceList: React.FC = () => {
     } finally {
       if (!silent) setLoading(false);
     }
-  };
+  }, [showToast]);
 
   // Auto-refresh functionality
   useEffect(() => {
@@ -139,7 +139,7 @@ export const WorkspaceList: React.FC = () => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [autoRefresh]);
+  }, [autoRefresh, loadWorkspaces]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -308,7 +308,7 @@ export const WorkspaceList: React.FC = () => {
       hasLoadedRef.current = true;
       loadWorkspaces();
     }
-  }, []);
+  }, [loadWorkspaces]);
 
   if (loading) {
     return (
