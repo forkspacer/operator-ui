@@ -29,28 +29,6 @@ export const WorkspaceCard: React.FC<WorkspaceCardProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const getStatusBadgeClass = (phase: string) => {
-    switch (phase.toLowerCase()) {
-      case 'ready':
-        return 'status-ready';
-      case 'hibernated':
-        return 'status-hibernated';
-      case 'failed':
-        return 'status-failed';
-      default:
-        return 'status-hibernated';
-    }
-  };
-
-  const getStatusIcon = (phase: string, hibernated: boolean) => {
-    if (hibernated) return <FiPause size={14} />;
-    switch (phase.toLowerCase()) {
-      case 'ready': return <FiPlay size={14} />;
-      case 'failed': return <FiAlertCircle size={14} />;
-      default: return <FiClock size={14} />;
-    }
-  };
-
   const handleDelete = () => {
     if (window.confirm(`Are you sure you want to delete workspace "${workspace.name}"?`)) {
       onDelete(workspace.name, workspace.namespace);
