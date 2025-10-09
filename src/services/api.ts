@@ -16,7 +16,10 @@ import {
   ModuleListResponse
 } from '../types/module';
 
-const API_BASE_URL = 'http://localhost:8421/api/v1';
+// Use environment variable if set during build, otherwise use relative path for ingress
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL 
+  ? `${process.env.REACT_APP_API_BASE_URL}/api/v1`
+  : '/api/v1';  // Use relative path when no env var is set (for ingress deployment)
 
 class ApiService {
   private async request<T>(

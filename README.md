@@ -353,10 +353,14 @@ npm install
 3. **Start the development server:**
 
 ```bash
-npm start
+# Using make (recommended for local development)
+make dev
+
+# Or directly with npm (requires setting API URL)
+REACT_APP_API_BASE_URL=http://localhost:8421 npm start
 ```
 
-The app will open at `http://localhost:3000` with hot-reloading enabled.
+The app will open at `http://localhost:3000` with hot-reloading enabled. The `make dev` command automatically sets the API URL environment variable for connecting to local api-server.
 
 ### Available Scripts
 
@@ -397,7 +401,13 @@ Output in `build/` directory.
 #### Docker Build
 
 ```bash
+# Default build (uses relative paths /api/v1 - for production with ingress)
 docker build -t operator-ui:local .
+
+# Build with custom API URL (for standalone deployments)
+docker build --build-arg REACT_APP_API_BASE_URL=http://your-api-server:8421 -t operator-ui:local .
+
+# Run the container
 docker run -p 8080:80 operator-ui:local
 ```
 
