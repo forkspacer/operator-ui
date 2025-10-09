@@ -12,7 +12,12 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-# Build the application
+# Build argument for API URL - users can override this
+# For ingress setup, use empty string to use relative paths
+ARG REACT_APP_API_BASE_URL=""
+
+# Build the application with environment variable
+ENV REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL
 RUN npm run build
 
 # Production stage - serve with nginx
