@@ -98,22 +98,19 @@ export const WorkspaceList: React.FC = () => {
       // Load all modules once
       const allModules = await apiService.listModules();
 
-      // Group workspaces by namespace and only show modules under the first workspace in each namespace
+      // Group modules by workspace reference (not namespace)
       const modulesMap = new Map<string, Module[]>();
-      const namespacesProcessed = new Set<string>();
 
       workspacesData.forEach((workspace) => {
         const workspaceKey = `${workspace.namespace}-${workspace.name}`;
 
-        if (!namespacesProcessed.has(workspace.namespace)) {
-          // This is the first workspace in this namespace, assign all modules from this namespace
-          const namespaceModules = allModules.filter(module => module.namespace === workspace.namespace);
-          modulesMap.set(workspaceKey, namespaceModules);
-          namespacesProcessed.add(workspace.namespace);
-        } else {
-          // Not the first workspace in this namespace, no modules
-          modulesMap.set(workspaceKey, []);
-        }
+        // Filter modules that reference this specific workspace
+        const workspaceModules = allModules.filter(module =>
+          module.workspace?.name === workspace.name &&
+          module.workspace?.namespace === workspace.namespace
+        );
+
+        modulesMap.set(workspaceKey, workspaceModules);
       });
 
       setModulesByWorkspace(modulesMap);
