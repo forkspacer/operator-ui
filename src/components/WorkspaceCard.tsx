@@ -117,7 +117,7 @@ export const WorkspaceCard: React.FC<WorkspaceCardProps> = ({
                   </div>
                   <div className="module-details">
                     <div className="module-name">{module.name}</div>
-                    <div className="module-type">SERVICE</div>
+                    <div className="module-type">{module.type}</div>
                   </div>
                 </div>
                 <div className="module-status-actions">

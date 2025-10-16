@@ -4,6 +4,7 @@ export interface Module {
   phase: ModulePhase;
   message?: string;
   hibernated: boolean;
+  type: string;
   workspace?: ModuleWorkspaceReference;
 }
 
