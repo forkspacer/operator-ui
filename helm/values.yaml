@@ -40,7 +40,11 @@ resources:
     memory: 128Mi
 
 env:
-  REACT_APP_API_BASE_URL: "http://forkspacer-api-server:8080"
+  # API server URL for nginx server-side proxying (internal cluster service)
+  API_SERVER_URL: "http://forkspacer-api-server:8080"
+  # Leave REACT_APP_API_BASE_URL empty to use relative paths (/api/v1)
+  # which nginx will proxy to API_SERVER_URL
+  REACT_APP_API_BASE_URL: ""
 
 livenessProbe:
   httpGet:
