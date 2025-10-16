@@ -33,10 +33,10 @@ spec:
           containerPort: {{ .Values.service.targetPort }}
           protocol: TCP
         env:
-        - name: REACT_APP_API_BASE_URL
-          value: {{ include "operator-ui.apiUrl" . | quote }}
+        - name: API_SERVER_URL
+          value: {{ .Values.env.API_SERVER_URL | default (include "operator-ui.apiUrl" .) | quote }}
         {{- range $key, $value := .Values.env }}
-        {{- if ne $key "REACT_APP_API_BASE_URL" }}
+        {{- if and (ne $key "API_SERVER_URL") (ne $key "REACT_APP_API_BASE_URL") }}
         - name: {{ $key }}
           value: {{ $value | quote }}
         {{- end }}
