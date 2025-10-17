@@ -15,6 +15,7 @@ import {
   ListModulesRequest,
   ModuleListResponse
 } from '../types/module';
+import { ModuleCatalog } from '../types/catalog';
 
 // Use environment variable if set during build, otherwise use relative path for ingress
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL 
@@ -211,6 +212,22 @@ class ApiService {
 
     if (response.error) {
       throw new Error(response.error.data);
+    }
+  }
+
+  // Fetch module catalog from GitHub
+  async fetchModuleCatalog(catalogUrl: string = 'https://raw.githubusercontent.com/forkspacer/modules/main/index.json'): Promise<ModuleCatalog> {
+    try {
+      const response = await fetch(catalogUrl);
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch catalog: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Failed to fetch module catalog:', error);
+      throw error;
     }
   }
 }

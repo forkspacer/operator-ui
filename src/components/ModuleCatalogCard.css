@@ -1,0 +1,152 @@
+.module-catalog-card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+.module-catalog-card:hover {
+  border-color: #3a3a3a;
+  background: #1f1f1f;
+  transform: translateY(-2px);
+}
+
+.module-catalog-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.module-catalog-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.module-catalog-icon-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.module-catalog-header-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.module-catalog-title {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.module-catalog-category {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+  text-transform: capitalize;
+}
+
+.module-catalog-description {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #9ca3af;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+.module-catalog-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.module-catalog-tag {
+  padding: 4px 10px;
+  background: #2a2a2a;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.module-catalog-tag-more {
+  padding: 4px 10px;
+  background: #333;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.module-catalog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid #2a2a2a;
+}
+
+.module-catalog-version {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.module-catalog-version-label {
+  font-size: 11px;
+  color: #6b7280;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.module-catalog-version-value {
+  font-size: 12px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.module-catalog-install-btn {
+  padding: 8px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.module-catalog-install-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.module-catalog-install-btn:active {
+  transform: scale(0.98);
+}

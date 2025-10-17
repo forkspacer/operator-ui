@@ -19,8 +19,44 @@ body {
   flex-direction: column;
   width: 100%;
   min-height: 100vh;
-  padding: 32px;
   background: #0a0a0a;
+}
+
+.app-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 16px 32px 0 32px;
+  background: #0a0a0a;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.app-tab {
+  padding: 12px 24px;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+  position: relative;
+  top: 1px;
+}
+
+.app-tab:hover {
+  color: #e5e7eb;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.app-tab.active {
+  color: #667eea;
+  border-bottom-color: #667eea;
+}
+
+.app-content {
+  flex: 1;
+  padding: 32px;
 }
 
 h1 {
