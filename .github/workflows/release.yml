@@ -1,9 +1,8 @@
 name: Release - Build and Push Image
 
 on:
-  push:
-    tags:
-      - 'v*'
+  release:
+    types: [created]
 
 permissions:
   contents: write
@@ -25,8 +24,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
 
       - name: Extract release tag
         run: |
@@ -73,7 +72,7 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
-        
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -94,23 +93,3 @@ jobs:
               "version": "${{ env.VERSION }}",
               "chart_version": "${{ env.CHART_VERSION }}"
             }
-
-      - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.VERSION }}
-          release_name: Release ${{ env.VERSION }}
-          body: |
-            ## Docker Image
-
-            ```
-            docker pull ${{ env.IMAGE_REPO }}:${{ env.VERSION }}
-            ```
-
-            ## Installation
-
-            See the [documentation](https://github.com/forkspacer/operator-ui#installation) for installation instructions.
-          draft: false
-          prerelease: false
