@@ -19,6 +19,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
   const [formData, setFormData] = useState<CreateWorkspaceRequest>({
     name: '',
     namespace: '',
+    type: 'kubernetes',
     connection: {
       type: 'in-cluster',
     },
@@ -57,6 +58,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
       setFormData({
         name: '',
         namespace: '',
+        type: 'kubernetes',
         connection: { type: 'in-cluster' },
         hibernated: false,
       });
@@ -81,6 +83,20 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
         requestData.namespace = formData.namespace.trim();
       }
 
+      // Include workspace type
+      if (formData.type) {
+        requestData.type = formData.type;
+      }
+
+      // Include namespace prefix if provided
+      if (formData.namespacePrefix && formData.namespacePrefix.trim()) {
+        requestData.namespacePrefix = formData.namespacePrefix.trim();
+        // Only include createNamespace if namespacePrefix is set
+        if (formData.createNamespace !== undefined) {
+          requestData.createNamespace = formData.createNamespace;
+        }
+      }
+
       // Add 'from' field if creating from existing workspace
       if (createFromExisting && selectedExistingWorkspace) {
         const [namespace, name] = selectedExistingWorkspace.split('/');
@@ -96,6 +112,7 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
       setFormData({
         name: '',
         namespace: '',
+        type: 'kubernetes',
         connection: { type: 'in-cluster' },
         hibernated: false,
       });
@@ -187,6 +204,23 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
 
           <div className="form-group">
             <label className="form-label">
+              Workspace Type
+            </label>
+            <select
+              className="form-select"
+              value={formData.type}
+              onChange={(e) => setFormData({
+                ...formData,
+                type: e.target.value as 'kubernetes' | 'managed'
+              })}
+            >
+              <option value="kubernetes">Kubernetes (Connect to existing cluster)</option>
+              <option value="managed">Managed (vCluster - isolated virtual cluster)</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">
               Connection Type {createFromExisting && selectedExistingWorkspace && '(inherited)'}
             </label>
             <select
@@ -202,6 +236,31 @@ export const CreateWorkspaceModal: React.FC<CreateWorkspaceModalProps> = ({
               <option value="kubeconfig">Kubeconfig</option>
             </select>
           </div>
+
+          <div className="form-group">
+            <label className="form-label">Namespace Prefix</label>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="e.g., dev- (optional)"
+              value={formData.namespacePrefix || ''}
+              onChange={(e) => setFormData({ ...formData, namespacePrefix: e.target.value || undefined })}
+            />
+            <small style={{ color: '#666', fontSize: '12px', marginTop: '4px', display: 'block' }}>
+              Prefix for all module deployment namespaces. Example: "dev-" creates "dev-default", "dev-database"
+            </small>
+          </div>
+
+          {formData.namespacePrefix && (
+            <div className="form-group">
+              <CustomCheckbox
+                id="createNamespace"
+                checked={formData.createNamespace || false}
+                onChange={(checked) => setFormData({ ...formData, createNamespace: checked })}
+                label="Auto-create prefixed namespaces"
+              />
+            </div>
+          )}
 
           <div className="form-group">
             <CustomCheckbox

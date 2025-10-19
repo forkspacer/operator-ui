@@ -11,12 +11,14 @@ export interface Workspace {
 export interface CreateWorkspaceRequest {
   name: string;
   namespace?: string;
+  type?: 'kubernetes' | 'managed';
   connection: {
     type: 'in-cluster' | 'kubeconfig';
     secret?: {
       name: string;
       namespace: string;
     };
+    key?: string;
   };
   hibernated: boolean;
   from?: {
@@ -28,6 +30,8 @@ export interface CreateWorkspaceRequest {
     schedule: string;
     wakeSchedule?: string;
   };
+  namespacePrefix?: string;
+  createNamespace?: boolean;
 }
 
 export interface DeleteWorkspaceRequest {
@@ -49,6 +53,8 @@ export interface UpdateWorkspaceRequest {
     schedule: string;
     wakeSchedule?: string;
   };
+  namespacePrefix?: string;
+  createNamespace?: boolean;
 }
 
 export interface ApiResponse<T> {

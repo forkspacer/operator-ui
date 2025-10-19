@@ -22,9 +22,42 @@ export interface ModuleWorkspaceReference {
   namespace: string;
 }
 
+export interface ModuleSourceConfigMapRef {
+  name: string;
+  namespace: string;
+  key?: string;
+}
+
+export interface ModuleSourceChartRepository {
+  url: string;
+  chart: string;
+  version?: string;
+}
+
+export interface ModuleSourceChartGit {
+  repo: string;
+  path: string;
+  revision: string;
+}
+
+export interface ModuleSourceChartRef {
+  configMap?: ModuleSourceConfigMapRef;
+  repository?: ModuleSourceChartRepository;
+  git?: ModuleSourceChartGit;
+}
+
+export interface ModuleSourceExistingHelmReleaseRef {
+  name: string;
+  namespace: string;
+  chartSource: ModuleSourceChartRef;
+  values?: Record<string, any>;
+}
+
 export interface ModuleSource {
   raw?: string;
   httpURL?: string;
+  configMap?: ModuleSourceConfigMapRef;
+  existingHelmRelease?: ModuleSourceExistingHelmReleaseRef;
 }
 
 export interface CreateModuleRequest {
