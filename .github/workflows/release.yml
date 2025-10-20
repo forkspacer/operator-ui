@@ -69,6 +69,17 @@ jobs:
       - name: Create charts directory
         run: |
           make build-charts-site
+      - name: Upload chart to current release
+        run: |
+          CHART_VERSION="${GITHUB_REF#refs/tags/v}"
+          CHART_FILE="operator-ui-${CHART_VERSION}.tgz"
+          
+          echo "📦 Uploading $CHART_FILE to release $VERSION..."
+          
+          gh release upload $VERSION $CHART_FILE --clobber
+          echo "✅ Chart uploaded to GitHub Release"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
