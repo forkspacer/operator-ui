@@ -1,0 +1,67 @@
+name: Update Version
+
+on:
+  repository_dispatch:
+    types: [version-update]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract version info
+        id: version
+        run: |
+          echo "VERSION=${{ github.event.client_payload.version }}" >> $GITHUB_OUTPUT
+          echo "CHART_VERSION=${{ github.event.client_payload.chart_version }}" >> $GITHUB_OUTPUT
+
+      - name: Update version using Makefile
+        run: |
+          make update-version VERSION=${{ steps.version.outputs.VERSION }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.DEPENDENCY_UPDATE_TOKEN }}
+          commit-message: |
+            chore: update version to ${{ steps.version.outputs.VERSION }}
+            
+            - Updated VERSION in Makefile to ${{ steps.version.outputs.VERSION }}
+            - Updated Chart.yaml version to ${{ steps.version.outputs.CHART_VERSION }}
+            - Updated Chart.yaml appVersion to ${{ steps.version.outputs.VERSION }}
+            - Updated image tag in values.yaml to ${{ steps.version.outputs.VERSION }}
+            
+          title: "chore: update version to ${{ steps.version.outputs.VERSION }}"
+          body: |
+            ## 🔄 Version Update
+            
+            This PR automatically updates the version across all configuration files following the release of **${{ steps.version.outputs.VERSION }}**.
+            
+            ### Changes
+            - **Release Tag**: ${{ steps.version.outputs.VERSION }}
+            - **Chart Version**: ${{ steps.version.outputs.CHART_VERSION }}
+            
+            ### Files Updated
+            - ✅ `Makefile` - VERSION variable
+            - ✅ `helm/Chart.yaml` - version and appVersion fields
+            - ✅ `helm/values.yaml` - image tag
+            
+            ### Why this PR?
+            This ensures that the repository's default branch always contains the correct version information matching the latest release, making it easier for developers to work with the most current version.
+            
+            ### Verification Checklist
+            - [ ] Makefile VERSION matches release tag
+            - [ ] Chart.yaml version field updated correctly (without 'v' prefix)
+            - [ ] Chart.yaml appVersion field matches release tag (with 'v' prefix)
+            - [ ] values.yaml image tag matches release tag
+            - [ ] All version references are consistent
+            
+          branch: version-update/${{ steps.version.outputs.VERSION }}
+          delete-branch: true
+          base: main
