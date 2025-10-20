@@ -93,3 +93,14 @@ jobs:
               "version": "${{ env.VERSION }}",
               "chart_version": "${{ env.CHART_VERSION }}"
             }
+
+      - name: Trigger version update PR
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DEPENDENCY_UPDATE_TOKEN }}
+          event-type: version-update
+          client-payload: |
+            {
+              "version": "${{ env.VERSION }}",
+              "chart_version": "${{ env.CHART_VERSION }}"
+            }
